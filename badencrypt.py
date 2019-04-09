@@ -13,10 +13,6 @@ import os
 import Crypto.Cipher.AES
 import hashlib
 
-print "########################################################"
-print "######################Encrypt###########################"
-print "########################################################"
-
 f = open(sys.argv[1], 'r')
 key = f.readline()
 key = key[:32].decode("hex")
@@ -38,18 +34,4 @@ tag = hashlib.sha256(message).hexdigest()
 # print iv.encode("hex")
 # print ciphertext
 # print tag
-
-
-print message[:16]
-print len(message)
-print "iv -> " + str(iv) + ", len: " + str(len(str(iv)))
-print "encoded iv -> " + iv.encode("hex") + ", len: " + str(len(str(iv.encode("hex"))))
-print "ciphertext -> " + ciphertext + ", len: " + str(len(ciphertext))
-print "tag -> " + tag
-
-try:
-    os.remove("orig_cipher")
-except:
-    print "No such file execption"
-cf = open("orig_cipher", "w")
-cf.write(iv.encode("hex") + ciphertext + tag)
+print iv.encode("hex") + ciphertext + tag
