@@ -62,29 +62,4 @@ newTag = hashlib.sha256(newpt).digest()
 
 # TODO: Print the new encrypted message
 output = newivText.encode("hex") + ciphertext[16:].encode("hex") + newTag.encode("hex") 
-#print output 
-
-f = open("testkeyfile", 'r' )
-key = f.readline()
-key = key[:32].decode("hex")
-f.close()
-
-# Grab ciphertext from first argument
-ciphertextWithTag = (output).decode("hex")
-
-if len(ciphertextWithTag) < 16+16+32:
-    print "Ciphertext is too short!"
-    sys.exit(0)
-
-iv = ciphertextWithTag[:16]
-ciphertext = ciphertextWithTag[:len(ciphertextWithTag)-32]
-tag = ciphertextWithTag[len(ciphertextWithTag)-32:]
-cipher = Crypto.Cipher.AES.new(key, Crypto.Cipher.AES.MODE_CBC, IV=iv )
-plaintext = cipher.decrypt( ciphertext[16:] )
-
-# Check the tag
-if tag.encode("hex") != hashlib.sha256(plaintext).hexdigest():
-    print "Invalid tag!"
-else:
-    print "Verified message:"
-    print plaintext
+print output 
