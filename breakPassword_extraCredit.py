@@ -1,5 +1,7 @@
 from hashlib import sha256
+import binascii
 import sys
+import time
 
 '''
 combMAX = {
@@ -104,8 +106,8 @@ def generateCombinations(word):
 		l += n2
 		n1 = n2
 		count += 1
+	l = [x[0][0:len(x[0])-1] for x in l]
 	l = list(set(l))
-	l = [x[0] for x in l]
 	return l
 
 def change1(word, count):
@@ -138,25 +140,71 @@ def makePwdList(filename):
 		print(str(i)+ "/"+ str(len(l)))
 
 def getHash(usr, pwd, salt):
-		x = 'swift,password,84829348943'
+		#x = 'swift,password,84829348943'
+		x = usr + "," + pwd + "," + salt 
 		for _ in range(0, 256):
-			#x =  sha256(x.encode('utf-8')).hexdigest()
 			x = sha256(x).digest()
+		return x.encode('hex')	 
+
+def breakUP(filename):
+	file = open(filename, "r")
+	l = file.readlines()
+	files = []
+	i = 1
+	c = 0
+	nFile = "words" + str(i) + ".txt"
+	files.append(nFile)
+	wFile = open(nFile, "w+")
+	for w in l:
+		wFile.write(w)
+		c  += 1
+		if c % 10000 == 0:
+			nFile = "words" + str(i) + ".txt"
+			wFile = open(nFile, "w+")
+			i += 1
+			files.append(nFile)
+	return files
 			
-		print(x)	 
 
 
-def attemptHack(usr, salt):
-	print("attemp hack")
+
+def attemptHack(usr, salt, files):
+	s = open("progress.txt", "w+")
+	for file in files:
+		f = open(file, "r")
+		l = f.readlines()
+		for w in l:
+			pwds = generateCombinations(w)
+			for pwd in pwds:
+				h = getHash(usr, pwd, salt)
+				#if h == "d9015e035aaed42e3834c0d8ccb614d211a9aecc13440792c4d3d6256924f809": #TESTING
+				if h == "1ca6004d870d5c9dcf2ffd231046a9015072a518c708040a02bf8b5b3a4e18b2":
+					return pwd
+		s.write(file)
+		print(file)
+
+	return None
 
 def main():
-	#makePwdList("words.txt")
+	'''
+	TESTING
 	usr = "swift"
-	pwd = "password"
+	#pwd = "Adv!cE$"
 	salt = "84829348943" 
-	getHash(usr, pwd, salt)
-	#print(sol)
-	#print(sol == "67986ddf45bd064f4c2eb63258a5269838169da9a35ebb13692a2de22e6a4768")
-	#attemptHack(usr, salt)
+	#x = getHash(usr, pwd, salt)
+	#print(x)
+	'''
+	usr = "zifan"
+	salt = "8934029034"
+	filename = "words.txt"
+	fileList = breakUP(filename)
+	fileList.reverse()
+	sol = attemptHack(usr, salt, fileList)
+	if sol is None:
+		print("__FAILURE__")
+	else:
+		print("SUCCESS : pwd = ", sol)
+	
 
 main()
+
