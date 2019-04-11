@@ -1,13 +1,30 @@
 # Part A:
 
 ## Recovered password
+587452345
 
 ## Pseudocode for attack
+/*brute force attack to crach target_hash*/
+def bruteForce(usr, salt,target_hash):
+	for pwd in range(0, some_large_number):
+		t = usr + ',' + str(pwd) + ',' + salt
+		x =  hashlib.sha256(t.encode('utf-8')).hexdigest() 
+		if x == target_hash:
+			return pwd
+
+    return None
 
 ## Worst case running time
+Since making hash from guess_password is constant time (let it be some 'k').
+Time Complexity = O( k * some_large_number )
+                = O( some_large_number )
 
 ## Discussion of current proposal and suggestions for improvement
-
+The current password according to the suggestion is pretty easy to crack as it is entirely numeric. One
+obvious way to make the password much tougher to break is to only allow password that have at least one
+uppercase character, lowercase character, number and special character. Also, enforcing a certain minimum
+length.
+Also, limiting number of tries.
 
 # Part B:
 
@@ -15,3 +32,52 @@
 
 ## Suggestions for improving the scheme
 
+# Part C (EXTRA CREDIT):
+
+## Recovered password
+$E@f0od
+
+## Pseudocode for attack
+/*passed a word, returns a list in which at most 1 character from word
+is changed according to certain established rules*/
+def one_change(word, count):
+	l = []
+	if num_variations > =:
+		return l
+	else:
+        for ch in word:
+            l += list_of_words_with_ch_replace_ by_each_variations_of_ch  
+        return l
+
+/*returns all possible variations of word*/
+def generateCombinations(word):
+    l, ret = [word], []
+    while num_changes < 5:
+        for w in l:
+            var += one_change(w)
+        ret += var
+        l = var
+    return ret
+
+/*generates hash (according to spec) for given usr, pwd and salt*/
+def getHash(usr, pwd, salt):
+		#x = 'swift,password,84829348943'
+		x = usr + "," + pwd + "," + salt 
+		for _ in range(0, 256):
+			x = sha256(x).digest()
+		return x.encode('hex')	 
+
+/*attempts to crack target_hash*/
+def attemptHack(usr, salt, files, target_hash):
+	for file in files:
+        words = list_of_words_from_file
+        for word in words:
+			pwds = generateCombinations(word)
+			for pwd in pwds:
+				h = getHash(usr, pwd, salt)
+				if h == target_hash:
+					return pwd
+    return None
+
+## Discussion of current proposal and suggestions for improvement
+Making sure that the word is not based on a dictionary word and limiting number of tries.
