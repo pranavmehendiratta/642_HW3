@@ -180,6 +180,8 @@ def attemptHack(usr, salt, files):
 				#if h == "d9015e035aaed42e3834c0d8ccb614d211a9aecc13440792c4d3d6256924f809": #TESTING
 				if h == "1ca6004d870d5c9dcf2ffd231046a9015072a518c708040a02bf8b5b3a4e18b2":
 					return pwd
+			print("."),
+		print(" ")
 		s.write(file)
 		print(file)
 
@@ -198,7 +200,7 @@ def main():
 	salt = "8934029034"
 	filename = "words.txt"
 	fileList = breakUP(filename)
-	fileList.reverse()
+	
 	sol = attemptHack(usr, salt, fileList)
 	if sol is None:
 		print("__FAILURE__")
