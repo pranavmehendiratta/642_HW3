@@ -24,7 +24,11 @@ The current password according to the suggestion is pretty easy to crack as it i
 obvious way to make the password much tougher to break is to only allow password that have at least one
 uppercase character, lowercase character, number and special character. Also, enforcing a certain minimum
 length.
-Also, limiting number of tries.
+Also, limiting number of tries.The system can be designed to allow only a certain number of failed attempts 
+in a given timeframe (example 10 failed attemps in 1 min) after which an attempt isn't allowed for a certain 
+period of time (example 1 hr). Additionally after each additional failed attempt no attempts should be 
+allowed for an increasing amount of time (example 11th failed attemp results in 4 hrs of no attempt and 12th 
+failed attempt results in 16 hrs of no attemp). This would grealy reduce the chances of cracking the password.
 
 # Part B:
 
