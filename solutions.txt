@@ -30,21 +30,22 @@ Also, limiting number of tries.
 
 ## Discussion of the current scheme
 The current scheme does encrypting and tag creation at the same time. Therefore, it is vulnerable to known
-plaintext attack. Here the attacker can change the first block of the plaintext based by just changing the IV
+plaintext attack. Here the attacker can change the first block of the decrypted plaintext by just changing the IV
 (this is possible because we know what the original plaintext look like, its ciphertext, and the IV). We use the
 original plaintext XOR original IV to find the value of first block of characters right after the encryption
-block. This helps us to figure out the new IV and hence carry out the attack.
+box (this is the box that takes key and CT and produces the output which is then XORed with IV to find 
+the plaintext). This helps us to figure out the new IV and hence carry out the attack.
 
 
 ## Suggestions for improving the scheme
 The attack was possible on the scheme because we knew the original plaintext and we were only modifying the
-first block by changing the IV. Therefore, if we can some random salt in the first block (which is not the part
-of the message we can prevent the changing of the decrypted plaintext). Moreover, to build on this we can 
-also follow the strategy of encrypt-then-mac instead of encrypt-and-mac (which is currently) being done. When
-doing this the attacker needs to change the ciphertext to create a new tag. This step is hard to do without
-knowing the key. Hence, we will be able to maintain the integrity of the ciphertext. Therefore, we know that
-the ciphertext is accurate and even if the first block is changed (which is not possible because it is randomized)
-it is not the part of the message anymore.
+first block by changing the IV. Therefore, if we can replace the first block with some random salt (which 
+is not the part of the message we can prevent the changing of the decrypted plaintext). Moreover, to build 
+on this we can also follow the strategy of encrypt-then-mac instead of encrypt-and-mac (which is currently 
+being done). When doing this the attacker needs to change the ciphertext to create a new tag. This step is 
+hard to do without knowing the key. Hence, we will be able to maintain the integrity of the ciphertext. 
+Therefore, we know that the ciphertext is accurate and even if the first block is changed (which is not 
+possible because it is randomized) it is not the part of the message anymore. Thus, the message remains intact.
 
 # Part C (EXTRA CREDIT):
 
